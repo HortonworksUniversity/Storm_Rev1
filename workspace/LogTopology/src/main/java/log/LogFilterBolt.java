@@ -9,26 +9,25 @@ import backtype.storm.tuple.Values;
 
 public class LogFilterBolt extends BaseBasicBolt {
 
-	private static final long serialVersionUID = 5044797426107566662L;
-	String _filterString = "";
-	
-	public LogFilterBolt(String filterString) {
-		_filterString = filterString;
-	}
+  private static final long serialVersionUID = 5044797426107566662L;
+  String filterString = "";
 
-	@Override
-	public void execute(Tuple input, BasicOutputCollector collector) {
-		//String date = input.getString(0);
-		String loglevel = input.getString(1);
-		String message = input.getString(2);
-		if(loglevel.equals(_filterString)) {
-			collector.emit(new Values(message));
-		}
-	}
+  public LogFilterBolt(String filterString) {
+    this.filterString = filterString;
+  }
 
-	@Override
-	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("message"));
-	}
+  @Override
+  public void execute(Tuple input, BasicOutputCollector collector) {
+    String loglevel = input.getString(1);
+    String message = input.getString(2);
+    if (loglevel.equals(filterString)) {
+      collector.emit(new Values(message));
+    }
+  }
+
+  @Override
+  public void declareOutputFields(OutputFieldsDeclarer declarer) {
+    declarer.declare(new Fields("message"));
+  }
 
 }

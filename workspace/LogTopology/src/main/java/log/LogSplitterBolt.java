@@ -8,19 +8,24 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
 public class LogSplitterBolt extends BaseBasicBolt {
-	private static final long serialVersionUID = 6042830233153585693L;
+  private static final long serialVersionUID = 6042830233153585693L;
 
-	@Override
-	public void execute(Tuple input, BasicOutputCollector collector) {
-		String date = input.getString(0).substring(0, 23);
-		String errormessage = input.getString(0).substring(24);
-		String [] words = errormessage.split(" ", 1);
-		collector.emit(new Values(date, words[0], words[1])); 
-	}
+  @Override
+  public void execute(Tuple input, BasicOutputCollector collector) {
+    try {
+      String date = input.getString(0).substring(0, 23);
+      String errormessage = input.getString(0).substring(24);
+      String[] words = errormessage.split("\\s+");
+      collector.emit(new Values(date, words[0], words[1]));
+    }
+    catch (IndexOutOfBoundsException e) {
+      //Invalid record, ignore
+    }
+  }
 
-	@Override
-	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("date","loglevel", "message"));
-	}
+  @Override
+  public void declareOutputFields(OutputFieldsDeclarer declarer) {
+    declarer.declare(new Fields("date", "loglevel", "message"));
+  }
 
 }

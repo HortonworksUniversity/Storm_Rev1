@@ -1,15 +1,15 @@
 project.ext.archiveName = 'storm-log.jar'
-project.ext.stormversion = '0.9.1.2.1.3.0-563'
+project.ext.stormversion = '0.9.3'
 
 buildscript {
-  repositories { 
-    jcenter() 
+  repositories {
+    jcenter()
     maven {
-      url="http://repo.hortonworks.com/content/repositories/releases/"
+      url = "http://repo.hortonworks.com/content/repositories/releases/"
     }
   }
   dependencies {
-    classpath 'com.github.jengelman.gradle.plugins:shadow:1.0.2'
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
   }
 }
 
@@ -30,25 +30,22 @@ targetCompatibility = 1.7
 repositories {
   jcenter()
   maven {
-    url="http://repo.hortonworks.com/content/repositories/releases/"
+    url = "http://conjars.org/repo"
   }
   maven {
-    url="http://conjars.org/repo"
-  }
-  maven {
-    url="http://clojars.org/repo"
+    url = "http://clojars.org/repo"
   }
 }
 
 dependencies {
-    compile "org.apache.storm:storm-core:${project.ext.stormversion}"
-    compile "org.apache.storm:storm-hdfs:${project.ext.stormversion}"
-    compile "org.apache.storm:storm-hbase:${project.ext.stormversion}"
-    compile "org.apache.storm:storm-kafka:${project.ext.stormversion}"
-    compile "org.apache.kafka:kafka_2.10:0.8.1.1"
+  compile "org.apache.storm:storm-core:${project.ext.stormversion}"
+  compile "org.apache.storm:storm-hdfs:${project.ext.stormversion}"
+  compile "org.apache.storm:storm-hbase:${project.ext.stormversion}"
+  compile "org.apache.storm:storm-kafka:${project.ext.stormversion}"
+  compile "org.apache.kafka:kafka_2.10:0.8.1.1"
 
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.hamcrest:hamcrest-all:1.3'
 }
 
 if (project.ext.properties.containsKey("archiveName")) {
@@ -70,7 +67,9 @@ shadowJar {
   mergeServiceFiles()
   dependencies {
     exclude(dependency("org.apache.storm:storm-core:${project.ext.stormversion}"))
-    exclude(dependency("org.slf4j:slf4j-log4j12:1.6.1"))
+    exclude(dependency("org.slf4j:slf4j-log4j12"))
+    exclude(dependency("org.slf4j:slf4j-api"))
+    exclude(dependency("org.slf4j:log4j-over-slf4j"))
   }
 }
 
