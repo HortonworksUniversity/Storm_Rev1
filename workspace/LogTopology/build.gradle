@@ -1,5 +1,5 @@
 project.ext.archiveName = 'storm-log.jar'
-project.ext.stormversion = '0.9.3'
+project.ext.stormversion = '0.9.1.2.1.5.0-695'
 
 buildscript {
   repositories {
@@ -26,6 +26,9 @@ targetCompatibility = 1.7
 
 repositories {
   jcenter()
+  maven {
+    url = "http://repo.hortonworks.com/content/repositories/releases/"
+  }
   maven {
     url = "http://conjars.org/repo"
   }
