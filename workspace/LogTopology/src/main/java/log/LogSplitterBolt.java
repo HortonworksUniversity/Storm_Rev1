@@ -13,10 +13,11 @@ public class LogSplitterBolt extends BaseBasicBolt {
   @Override
   public void execute(Tuple input, BasicOutputCollector collector) {
     try {
-      String date = input.getString(0).substring(0, 23);
-      String errormessage = input.getString(0).substring(24);
+      String message = input.getStringByField("message");
+      String date = message.substring(0, 23);
+      String errormessage = message.substring(24);
       String[] words = errormessage.split("\\s+");
-      collector.emit(new Values(date, words[0], words[1]));
+      collector.emit(new Values(date, words[0], words[1], message));
     }
     catch (IndexOutOfBoundsException e) {
       //Invalid record, ignore
@@ -25,7 +26,7 @@ public class LogSplitterBolt extends BaseBasicBolt {
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    declarer.declare(new Fields("date", "loglevel", "message"));
+    declarer.declare(new Fields("date", "loglevel", "component", "message"));
   }
 
 }
